@@ -222,8 +222,8 @@ async function onLogoSelect(e) {
   const reader = new FileReader()
   reader.onload = async () => {
     const base64 = reader.result
-    const savedPath = await window.electronAPI.saveLogo(base64)
-    logoPreview.value = savedPath
+    await window.electronAPI.saveLogo(base64)
+    logoPreview.value = base64
   }
   reader.readAsDataURL(file)
 }
