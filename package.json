@@ -1,6 +1,6 @@
 {
   "name": "receipt-printer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Receipt Printer App",
   "main": "./out/main/index.js",
   "author": "CoolerProYT",
@@ -24,6 +24,7 @@
     "@thesusheer/electron-printer": "^2.0.4",
     "dotenv": "^17.2.2",
     "node-thermal-printer": "^4.5.0",
+    "sharp": "^0.34.4",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
