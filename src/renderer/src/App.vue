@@ -1,6 +1,8 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
-    <div class="max-w-3xl mx-auto bg-white/70 backdrop-blur-lg shadow-xl rounded-2xl p-8 border border-gray-200">
+    <div
+      class="max-w-3xl mx-auto bg-white/70 backdrop-blur-lg shadow-xl rounded-2xl p-8 border border-gray-200"
+    >
       <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">🧾 Receipt Designer</h1>
 
       <!-- Printer Selection -->
@@ -71,11 +73,22 @@
                 placeholder="Item name"
                 class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
+
+              <!-- NEW: Quantity -->
+              <input
+                v-model.number="item.qty"
+                type="number"
+                min="1"
+                placeholder="Qty"
+                class="w-16 px-3 py-2 border border-gray-300 rounded-lg text-sm text-center focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              />
+
               <input
                 v-model="item.price"
                 placeholder="Price"
                 class="w-24 px-3 py-2 border border-gray-300 rounded-lg text-sm text-right focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
+
               <button
                 class="text-red-500 hover:text-red-600 transition"
                 @click="receipt.items.splice(i, 1)"
@@ -142,31 +155,34 @@
         <div
           class="bg-gray-50 rounded-xl shadow-inner p-4 font-mono text-sm border border-gray-200 flex flex-col items-center"
         >
-          <img
-            v-if="logoPreview"
-            :src="logoPreview"
-            alt="Logo"
-            class="h-16 mb-2 object-contain"
-          />
+          <img v-if="logoPreview" :src="logoPreview" alt="Logo" class="h-16 mb-2 object-contain" />
           <div class="text-center font-bold text-gray-800">{{ receipt.title }}</div>
-          <div class="border-t border-gray-300 my-2 w-full"></div>
+
+          <div class="grid grid-cols-12 text-gray-700 w-full">
+            <span class="col-span-7">Item Name</span>
+            <span class="col-span-3">Qty</span>
+            <span class="col-span-2 text-end">RM</span>
+          </div>
+
+          <div class="border-t border-dashed border-gray-300 my-2 w-full"></div>
 
           <div
             v-for="(item, i) in receipt.items"
             :key="'preview-item-' + i"
-            class="flex justify-between text-gray-700 w-full"
+            class="grid grid-cols-12 text-gray-700 w-full"
           >
-            <span>{{ item.name }}</span>
-            <span>{{ item.price }}</span>
+            <span class="col-span-7">{{ item.name }}</span>
+            <span class="col-span-3">x{{ item.qty }}</span>
+            <span class="col-span-2 text-end">{{ (item.qty * parseFloat(item.price || 0)).toFixed(2) }}</span>
           </div>
 
-          <div class="border-t border-gray-300 my-2 w-full"></div>
+          <div class="border-t border-dashed border-gray-300 my-2 w-full"></div>
 
           <div
             v-for="(t, i) in receipt.totals"
             :key="'preview-total-' + i"
             class="flex justify-between font-semibold text-gray-800 w-full"
-            :class="(i === receipt.totals.length - 1) ? 'border-t border-gray-300 my-2 w-full' : ''"
+            :class="i === receipt.totals.length - 1 ? 'border-t border-dashed border-gray-300 my-2 w-full' : ''"
           >
             <span>{{ t.label }}</span>
             <span>{{ t.value }}</span>
@@ -193,7 +209,7 @@ import { reactive, ref, onMounted } from 'vue'
 const receipt = reactive({
   title: '',
   items: [
-    { name: '', price: '' }
+    { name: '', qty: 1, price: '' } // ← added qty: 1
   ],
   totals: [
     { label: 'Subtotal', value: '0.00' },

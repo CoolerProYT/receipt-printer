@@ -33,11 +33,20 @@ export async function printReceipt(config) {
     printer.bold(false)
   }
 
+  printer.newLine()
+
+  printer.tableCustom([
+    { text: "Item Name", align: 'LEFT', width: 0.3, bold: true },
+    { text: "Qty", align: 'CENTER', width: 0.2, bold: true },
+    { text: "RM", align: 'RIGHT', cols: 7, bold: true }
+  ])
+
   printer.println('-'.repeat(32))
 
   config.items.forEach((item, index) => {
     printer.tableCustom([
-      { text: item.name, align: 'LEFT', width: 0.5 },
+      { text: item.name, align: 'LEFT', width: 0.3 },
+      { text: `x${item.qty}`, align: 'CENTER', width: 0.2 },
       { text: item.price, align: 'RIGHT', cols: 8 }
     ])
     if (index !== config.items.length - 1) {
